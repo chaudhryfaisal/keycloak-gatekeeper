@@ -17,12 +17,11 @@ package main
 
 import (
 	"encoding/base64"
+	"github.com/google/uuid"
 	"net/http"
 	"strconv"
 	"strings"
 	"time"
-
-	"github.com/satori/go.uuid"
 )
 
 // dropCookie drops a cookie into the response
@@ -105,7 +104,7 @@ func (r *oauthProxy) dropRefreshTokenCookie(req *http.Request, w http.ResponseWr
 
 // dropStateParameterCookie drops a state parameter cookie into the response
 func (r *oauthProxy) writeStateParameterCookie(req *http.Request, w http.ResponseWriter) string {
-	uuid := uuid.NewV4().String()
+	uuid := uuid.New().String()
 	requestURI := base64.StdEncoding.EncodeToString([]byte(req.URL.RequestURI()))
 	r.dropCookie(w, req.Host, "request_uri", requestURI, 0)
 	r.dropCookie(w, req.Host, "OAuth_Token_Request_State", uuid, 0)
